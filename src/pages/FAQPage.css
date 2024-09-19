@@ -1,0 +1,85 @@
+/* src/components/FAQPage.css */
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-section {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+}
+
+.question {
+    font-weight: bold;
+    color: #514f4f;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.answer {
+    display: none;
+    color: #000000;
+    font-size: 16px;
+}
+
+.answer p {
+    margin: 10px 0;
+}
+
+.answer a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.answer a:hover {
+    color: #0056b3;
+}
+
+.answer.active {
+    display: block;
+}
+
+h3 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h3 a {
+    text-decoration: none;
+    color: #000000;
+    transition: color 0.3s;
+}
+
+h3 a:hover {
+    color: #0cd527cc;
+}
+
+.search-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.toc {
+    margin-bottom: 20px;
+}
+
+.toc a {
+    display: block;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.toc a:hover {
+    color: #000;
+}

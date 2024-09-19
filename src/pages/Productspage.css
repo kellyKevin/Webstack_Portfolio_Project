@@ -1,0 +1,223 @@
+/* Global styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    color: #333;
+    height: 100%;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #2e7d32;
+  }
+  
+  /* Layout container */
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+  }
+  
+  .card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 250px;
+    margin: 15px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .card-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+  
+  .card-desc {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: #666;
+  }
+  
+  .card-price {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #2e7d32;
+    margin: 10px 0;
+  }
+  
+  button {
+    background-color: #2e7d32;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #27632a;
+  }
+  
+  .selector {
+    text-align: center;
+    margin: 20px;
+  }
+  
+  .selector h1,
+  .selector h2 {
+    margin: 10px;
+    color: #2e7d32;
+  }
+  
+  .selector select,
+  button {
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+  
+  #data-container {
+    margin: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  /* Modal styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+  }
+  
+  .modal.active {
+    display: block;
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    position: relative;
+  }
+  
+  .modal .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .modal .close:hover,
+  .modal .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  #modal-images {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  #modal-images img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin: 10px;
+  }
+  
+  /* Cart modal */
+  #cartModal .modal-content {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  
+  #cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .cart-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .cart-item img {
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .cart-item h4 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .cart-item p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+  }
+  
+  .cart-total {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2e7d32;
+    text-align: right;
+    margin-top: 20px;
+  }
+  
+  .quantity {
+    margin-left: auto;
+  }
+  
+  .quantity button {
+    background-color: #ff6666;
+  }
+  
+  .quantity button:hover {
+    background-color: #cc0000;
+  }
+  
+  .footer {
+    background-color: #2bee09;
+    color: #fff;
+    text-align: center;
+    padding: rem 0;
+    position: absolute;
+    width: 29%;
+}
