@@ -45,7 +45,7 @@ const Signup = () => {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             await updateProfile(userCredential.user, { displayName: username });
             alert('Sign up successful!');
-            window.location.href = 'login.html'; // Redirect to login page
+            window.location.href = 'login'; // Redirect to login page
         } catch (error) {
             console.error('Error registering user:', error);
             setErrorMessage('Error registering user: ' + error.message);
@@ -56,7 +56,7 @@ const Signup = () => {
         try {
             await signOut(auth);
             console.log('User signed out');
-            window.location.href = 'login.html'; // Redirect to login page after sign out
+            window.location.href = 'login'; // Redirect to login page after sign out
         } catch (error) {
             console.error('Error signing out:', error);
         }
