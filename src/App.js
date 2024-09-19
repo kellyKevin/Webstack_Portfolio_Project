@@ -8,6 +8,7 @@ import ContactPage from './pages/ContactPage';
 import AboutPage from './pages/AboutPage';
 import FAQPage from './pages/FAQPage';
 import LoginPage from './pages/LoginPage';
+import CartPage from './pages/CartPage'; // Import CartPage
 
 // Lazy load the SignUpPage for better performance
 const SignUpPage = React.lazy(() => import('./pages/SignUpPage'));
@@ -16,7 +17,7 @@ const SignUpPage = React.lazy(() => import('./pages/SignUpPage'));
 const LoadingSpinner = () => (
   <div className="loading-spinner">
     <div className="spinner"></div>
-    <p>Loading...</p>
+    <p>Loading...........</p>
   </div>
 );
 
@@ -71,9 +72,11 @@ const App = () => {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/cart" element={<CartPage />} /> {/* Added CartPage route */}
               
               {/* Protected Dashboard Route */}
               <Route path="/dashboard" element={<ProtectedRoute element={<h1>Dashboard</h1>} />} />
+              {/* Add other protected routes as needed */}
             </Routes>
           </Suspense>
         </main>

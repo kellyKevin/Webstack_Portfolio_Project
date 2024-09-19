@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, doc, setDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from 'react-router-dom'; // For navigation to cart
 import './Productspage.css'; // Assuming you have the CSS in a file named Productspage.css
 
 // Firebase configuration
@@ -28,6 +29,8 @@ const Productspage = () => {
     const [products, setProducts] = useState([]);
     const [modalImages, setModalImages] = useState([]);
     const [cartModalOpen, setCartModalOpen] = useState(false);
+    
+    const navigate = useNavigate(); // For navigating to cart page
 
     useEffect(() => {
         // Check auth state
@@ -158,8 +161,7 @@ const Productspage = () => {
     return (
         <div>
             <div className="selector">
-                <h3><a href="/">Home Page</a></h3>
-                <h1><a href="/cart">View Cart</a></h1>
+                <h1><button onClick={() => navigate('/cart')}>View Cart</button></h1>
                 <h2>
                     <label htmlFor="collection-select">Choose a collection:</label>
                     <select id="collection-select" onChange={(e) => fetchData(e.target.value)}>
