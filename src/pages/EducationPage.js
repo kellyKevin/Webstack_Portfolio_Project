@@ -1,14 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './styles.css';
 
 const EducationPage = () => {
     return (
-        <div className="education-page">
-            <h3><Link to="/">Home Page</Link></h3>
-            <h1>Educational Resources</h1>
+        <div className="page-container container">
+            <h1 className="page-title">Educational Resources</h1>
 
-            <section className="section">
+            <section className="content-section text-content">
                 <h2>Gardening Tips for Beginners</h2>
                 <p>Starting a garden can be one of the most rewarding things you do. Here are some basic tips to get you started:</p>
                 <ul>
@@ -19,7 +17,7 @@ const EducationPage = () => {
                 </ul>
             </section>
 
-            <section className="section">
+            <section className="content-section text-content">
                 <h2>Seedling Care Guide</h2>
                 <p>Your seedlings need special attention to grow into healthy plants:</p>
                 <ul>
@@ -30,7 +28,7 @@ const EducationPage = () => {
                 </ul>
             </section>
 
-            <section className="section">
+            <section className="content-section text-content">
                 <h2>Seasonal Planting Guide</h2>
                 <p>Understanding when to plant is key to a successful harvest:</p>
                 <p>Coming soon! We are working on a detailed calendar for your specific region.</p>
