@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { createUserWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged } from 'firebase/auth';
+import React, { useState } from 'react';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useNavigate, Link } from 'react-router-dom';
 import { auth } from '../firebase';
 import './styles.css';
@@ -11,15 +11,7 @@ const SignUpPage = () => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [isTermsAccepted, setIsTermsAccepted] = useState(false);
-    const [isUserSignedIn, setIsUserSignedIn] = useState(false);
     const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setIsUserSignedIn(!!user);
-        });
-        return () => unsubscribe();
-    }, []);
 
     const handleSignup = async (e) => {
         e.preventDefault();
