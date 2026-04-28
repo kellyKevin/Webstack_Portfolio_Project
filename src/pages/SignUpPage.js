@@ -1,24 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { getAuth, createUserWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
+import { createUserWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase';
 import './styles.css'; // Import your CSS file
 
-// Your Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyBUZJDLktz7qBHUPj_XtPybxz3vkz5cYlQ",
-    authDomain: "seedlingsweb-b6e5e.firebaseapp.com",
-    projectId: "seedlingsweb-b6e5e",
-    storageBucket: "seedlingsweb-b6e5e.appspot.com",
-    messagingSenderId: "1042431917002",
-    appId: "1:1042431917002:web:ebea14cb0326379967ed33",
-    measurementId: "G-JVWHZPDJX7"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
 const Signup = () => {
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -45,7 +32,7 @@ const Signup = () => {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             await updateProfile(userCredential.user, { displayName: username });
             alert('Sign up successful!');
-            window.location.href = 'login'; // Redirect to login page
+            navigate('/login'); // Redirect to login page
         } catch (error) {
             console.error('Error registering user:', error);
             setErrorMessage('Error registering user: ' + error.message);
@@ -56,7 +43,7 @@ const Signup = () => {
         try {
             await signOut(auth);
             console.log('User signed out');
-            window.location.href = 'login'; // Redirect to login page after sign out
+            navigate('/login'); // Redirect to login page after sign out
         } catch (error) {
             console.error('Error signing out:', error);
         }

@@ -1,6 +1,7 @@
-// src/components/FAQPage.js
+// src/pages/FAQPage.js
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './FAQPage.css'; // Ensure this path is correct
 
 const FAQPage = () => {
@@ -18,7 +19,7 @@ const FAQPage = () => {
                         <li>PayPal</li>
                         <li>Bank transfers</li>
                     </ul>
-                    <p>If you have any specific payment-related questions, feel free to <a href="contact.html">contact us</a>.</p>
+                    <p>If you have any specific payment-related questions, feel free to <Link to="/contact">contact us</Link>.</p>
                 </>
             ),
         },
@@ -32,7 +33,7 @@ const FAQPage = () => {
                         <li>Check the status of your order on our website.</li>
                         <li>Track your package through our shipping carrier's website.</li>
                     </ul>
-                    <p>If you haven't received a tracking number or need further assistance, please <a href="contact.html">contact our support team</a>.</p>
+                    <p>If you haven't received a tracking number or need further assistance, please <Link to="/contact">contact our support team</Link>.</p>
                 </>
             ),
         },
@@ -46,8 +47,8 @@ const FAQPage = () => {
                         <li>In their original condition.</li>
                         <li>With all tags attached.</li>
                     </ul>
-                    <p>For detailed information, please check our <a href="returns.html" target="_blank">returns policy page</a>. This page outlines our policies regarding returns, refunds, and exchanges, ensuring clarity and transparency for our customers.</p>
-                    <p>If you have questions about returning an item, please <a href="contact.html">contact our customer service</a>.</p>
+                    <p>For detailed information, please check our returns policy page. This page outlines our policies regarding returns, refunds, and exchanges, ensuring clarity and transparency for our customers.</p>
+                    <p>If you have questions about returning an item, please <Link to="/contact">contact our customer service</Link>.</p>
                 </>
             ),
         },
@@ -57,7 +58,7 @@ const FAQPage = () => {
             answer: (
                 <>
                     <p>Yes, we offer international shipping to most countries. Shipping costs and delivery times may vary depending on the destination. During checkout, you can view available shipping options for your location.</p>
-                    <p>For more information about international shipping, please <a href="contact.html">contact us</a>.</p>
+                    <p>For more information about international shipping, please <Link to="/contact">contact us</Link>.</p>
                 </>
             ),
         },
@@ -90,7 +91,7 @@ const FAQPage = () => {
     };
 
     return (
-        <div>
+        <div className="faq-page">
             <div className="search-container">
                 <input 
                     type="text" 
@@ -101,7 +102,7 @@ const FAQPage = () => {
                 />
             </div>
 
-            <h3><a href="index.html">Home Page</a></h3>
+            <h3><Link to="/">Home Page</Link></h3>
 
             <h1 style={{ textAlign: 'center' }}>Frequently Asked Questions</h1>
 

@@ -3,3 +3,12 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+import { TextEncoder, TextDecoder } from 'util';
+import { ReadableStream } from 'node:stream/web';
+
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+global.ReadableStream = ReadableStream;
+
+// Mock window.scrollTo
+window.scrollTo = jest.fn();
