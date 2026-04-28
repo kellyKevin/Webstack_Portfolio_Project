@@ -2,26 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from '../firebase';
+import { db } from '../firebase';
 import { useCart } from '../context/CartContext';
 import './Productspage.css';
 
 const ProductsPage = () => {
     const { addToCart, removeFromCart, showToast } = useCart();
-    const [currentUser, setCurrentUser] = useState(null);
     const [products, setProducts] = useState([]);
     const [activeCategory, setActiveCategory] = useState('fruits ');
     const [modalData, setModalData] = useState(null);
     const [quantities, setQuantities] = useState({});
     const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, user => {
-            setCurrentUser(user);
-        });
-        return () => unsubscribe();
-    }, []);
 
     const fetchData = async (category) => {
         setLoading(true);
