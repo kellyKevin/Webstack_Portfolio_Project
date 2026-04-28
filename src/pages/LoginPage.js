@@ -1,10 +1,12 @@
 // LoginPage.js
 import React, { useState, useEffect } from 'react';
-import { auth } from './firebase-config'; // Firebase configuration file
+import { auth } from '../firebase'; // Firebase configuration file
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { useNavigate, Link } from 'react-router-dom';
 import './styles.css'; // Assuming you have the styles in this CSS file
 
 const LoginPage = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -26,7 +28,7 @@ const LoginPage = () => {
             setUser(userCredential.user);
             alert('Login successful!');
             // Redirect to home page or another page
-            window.location.href = '/Products';
+            navigate('/products');
         } catch (error) {
             setErrorMessage('Login failed: ' + error.message);
         }
@@ -36,7 +38,7 @@ const LoginPage = () => {
         try {
             await signOut(auth);
             setUser(null);
-            window.location.href = '/login'; // Redirect to login page
+            navigate('/login'); // Redirect to login page
         } catch (error) {
             console.error('Error signing out:', error);
         }
@@ -73,7 +75,7 @@ const LoginPage = () => {
                         <button type="submit">Login</button>
                     </form>
                     <div className="signup-link">
-                        Don't have an account? <a href="/signup">Sign up</a>
+                        Don't have an account? <Link to="/signup">Sign up</Link>
                     </div>
                 </>
             ) : (

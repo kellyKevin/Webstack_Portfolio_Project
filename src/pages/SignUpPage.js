@@ -1,30 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { getAuth, createUserWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
+import { createUserWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged } from 'firebase/auth';
+import { useNavigate, Link } from 'react-router-dom';
+import { auth } from '../firebase';
 import './styles.css'; // Import your CSS file
 
-// Your Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyBUZJDLktz7qBHUPj_XtPybxz3vkz5cYlQ",
-    authDomain: "seedlingsweb-b6e5e.firebaseapp.com",
-    projectId: "seedlingsweb-b6e5e",
-    storageBucket: "seedlingsweb-b6e5e.appspot.com",
-    messagingSenderId: "1042431917002",
-    appId: "1:1042431917002:web:ebea14cb0326379967ed33",
-    measurementId: "G-JVWHZPDJX7"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-const Signup = () => {
+const SignUpPage = () => {
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [isTermsAccepted, setIsTermsAccepted] = useState(false);
     const [isUserSignedIn, setIsUserSignedIn] = useState(false);
+    const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -45,7 +33,7 @@ const Signup = () => {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             await updateProfile(userCredential.user, { displayName: username });
             alert('Sign up successful!');
-            window.location.href = 'login'; // Redirect to login page
+            navigate('/login'); // Redirect to login page
         } catch (error) {
             console.error('Error registering user:', error);
             setErrorMessage('Error registering user: ' + error.message);
@@ -56,18 +44,18 @@ const Signup = () => {
         try {
             await signOut(auth);
             console.log('User signed out');
-            window.location.href = 'login'; // Redirect to login page after sign out
+            navigate('/login'); // Redirect to login page after sign out
         } catch (error) {
             console.error('Error signing out:', error);
         }
     };
 
     const openTermsModal = () => {
-        document.getElementById('termsModal').style.display = 'block';
+        setIsTermsModalOpen(true);
     };
 
     const closeTermsModal = () => {
-        document.getElementById('termsModal').style.display = 'none';
+        setIsTermsModalOpen(false);
     };
 
     const agreeToTerms = () => {
@@ -118,7 +106,7 @@ const Signup = () => {
                         onChange={() => setIsTermsAccepted(!isTermsAccepted)}
                     />
                     <label htmlFor="termsCheckbox">
-                        I agree to the <a href="#" onClick={openTermsModal}>Terms and Conditions</a>
+                        I agree to the <button type="button" className="link-button" onClick={openTermsModal}>Terms and Conditions</button>
                     </label>
                 </div>
 
@@ -127,17 +115,18 @@ const Signup = () => {
                 <button type="submit">Sign Up</button>
             </form>
             <div className="login-link">
-                Already have an account? <a href="login">Login</a>
+                Already have an account? <Link to="/login">Login</Link>
             </div>
             {isUserSignedIn && (
                 <div className="signout-button">
                     <button onClick={handleSignOut}>Sign Out</button>
                 </div>
             )}
-            <div id="termsModal" className="modal">
-                <div className="modal-content">
-                    <h2>Terms and Conditions</h2>
-                    <div className="terms-text">
+            {isTermsModalOpen && (
+                <div id="termsModal" className="modal" style={{ display: 'block' }}>
+                    <div className="modal-content">
+                        <h2>Terms and Conditions</h2>
+                        <div className="terms-text">
                         <p>
                             Terms and Conditions for Using and Engaging with Ottawa seedlings
                         </p>
@@ -218,13 +207,14 @@ const Signup = () => {
                             terms and conditions at any time. Your continued use of the website constitutes acceptance of any
                             changes.
                         </p>
-                        <button onClick={agreeToTerms}>I Agree</button>
-                        <button onClick={closeTermsModal}>Close</button>
+                            <button onClick={agreeToTerms}>I Agree</button>
+                            <button onClick={closeTermsModal}>Close</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };
 
-export default Signup;
+export default SignUpPage;
