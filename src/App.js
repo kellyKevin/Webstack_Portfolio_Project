@@ -71,6 +71,7 @@ const App = () => {
     <Router>
       <CartProvider>
         <ScrollToTop />
+        <a href="#main-content" className="sr-only focus:not-sr-only">Skip to Content</a>
         <div className="app-container">
           <Header />
           <main className="main-content">

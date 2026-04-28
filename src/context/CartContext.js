@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import Toast from '../components/Toast/Toast';
 
 const CartContext = createContext();
 
@@ -10,6 +11,7 @@ export const useCart = () => useContext(CartContext);
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
     const [user, setUser] = useState(null);
+    const [toasts, setToasts] = useState([]);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -70,9 +72,28 @@ export const CartProvider = ({ children }) => {
         saveCart([], user);
     };
 
+    const showToast = (message, type = 'success') => {
+        const id = Date.now();
+        setToasts(prev => [...prev, { id, message, type }]);
+    };
+
+    const removeToast = (id) => {
+        setToasts(prev => prev.filter(t => t.id !== id));
+    };
+
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, showToast }}>
             {children}
+            <div className="toast-container">
+                {toasts.map(toast => (
+                    <Toast
+                        key={toast.id}
+                        message={toast.message}
+                        type={toast.type}
+                        onClose={() => removeToast(toast.id)}
+                    />
+                ))}
+            </div>
         </CartContext.Provider>
     );
 };

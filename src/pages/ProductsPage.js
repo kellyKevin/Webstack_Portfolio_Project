@@ -2,26 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from '../firebase';
+import { db } from '../firebase';
 import { useCart } from '../context/CartContext';
 import './Productspage.css';
 
 const ProductsPage = () => {
-    const { addToCart, removeFromCart } = useCart();
-    const [currentUser, setCurrentUser] = useState(null);
+    const { addToCart, removeFromCart, showToast } = useCart();
     const [products, setProducts] = useState([]);
-    const [activeCategory, setActiveCategory] = useState('fruits');
+    const [activeCategory, setActiveCategory] = useState('fruits ');
     const [modalData, setModalData] = useState(null);
     const [quantities, setQuantities] = useState({});
     const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, user => {
-            setCurrentUser(user);
-        });
-        return () => unsubscribe();
-    }, []);
 
     const fetchData = async (category) => {
         setLoading(true);
@@ -44,7 +35,7 @@ const ProductsPage = () => {
     };
 
     useEffect(() => {
-        fetchData('fruits');
+        fetchData('fruits ');
     }, []);
 
     const handleQuantityChange = (productId, value) => {
@@ -55,10 +46,6 @@ const ProductsPage = () => {
     };
 
     const handleAddToCart = (product) => {
-        if (!currentUser) {
-            alert("Please log in to add items to your cart.");
-            return;
-        }
         const quantity = quantities[product.id] || 1;
         addToCart({
             id: product.id,
@@ -66,6 +53,12 @@ const ProductsPage = () => {
             price: parseFloat(product.price) || 0,
             image: product.imagetree1
         }, quantity);
+        showToast(`Added ${quantity} ${product.id} to cart!`);
+    };
+
+    const handleRemoveFromCart = (productId) => {
+        removeFromCart(productId);
+        showToast("Removed from cart");
     };
 
     const openModal = (product) => {
@@ -83,13 +76,17 @@ const ProductsPage = () => {
             </header>
 
             <nav className="category-nav">
-                {['fruits', 'trees', 'veges'].map(cat => (
+                {[
+                    { id: 'fruits ', label: 'Fruits' },
+                    { id: 'trees', label: 'Trees' },
+                    { id: 'veges', label: 'Vegetables' }
+                ].map(cat => (
                     <button
-                        key={cat}
-                        className={`category-btn ${activeCategory === cat ? 'active' : ''}`}
-                        onClick={() => fetchData(cat)}
+                        key={cat.id}
+                        className={`category-btn ${activeCategory === cat.id ? 'active' : ''}`}
+                        onClick={() => fetchData(cat.id)}
                     >
-                        {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                        {cat.label}
                     </button>
                 ))}
             </nav>
@@ -128,7 +125,7 @@ const ProductsPage = () => {
                                 </div>
                                 <button
                                     className="remove-entirely-btn"
-                                    onClick={() => removeFromCart(product.id)}
+                                    onClick={() => handleRemoveFromCart(product.id)}
                                 >
                                     Remove from Cart
                                 </button>
