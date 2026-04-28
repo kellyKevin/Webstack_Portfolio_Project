@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { auth } from '../firebase';
 import './styles.css'; // Import your CSS file
 
-const Signup = () => {
+const SignUpPage = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -12,6 +12,7 @@ const Signup = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [isTermsAccepted, setIsTermsAccepted] = useState(false);
     const [isUserSignedIn, setIsUserSignedIn] = useState(false);
+    const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -50,11 +51,11 @@ const Signup = () => {
     };
 
     const openTermsModal = () => {
-        document.getElementById('termsModal').style.display = 'block';
+        setIsTermsModalOpen(true);
     };
 
     const closeTermsModal = () => {
-        document.getElementById('termsModal').style.display = 'none';
+        setIsTermsModalOpen(false);
     };
 
     const agreeToTerms = () => {
@@ -105,7 +106,7 @@ const Signup = () => {
                         onChange={() => setIsTermsAccepted(!isTermsAccepted)}
                     />
                     <label htmlFor="termsCheckbox">
-                        I agree to the <a href="#" onClick={openTermsModal}>Terms and Conditions</a>
+                        I agree to the <button type="button" className="link-button" onClick={openTermsModal}>Terms and Conditions</button>
                     </label>
                 </div>
 
@@ -114,17 +115,18 @@ const Signup = () => {
                 <button type="submit">Sign Up</button>
             </form>
             <div className="login-link">
-                Already have an account? <a href="login">Login</a>
+                Already have an account? <Link to="/login">Login</Link>
             </div>
             {isUserSignedIn && (
                 <div className="signout-button">
                     <button onClick={handleSignOut}>Sign Out</button>
                 </div>
             )}
-            <div id="termsModal" className="modal">
-                <div className="modal-content">
-                    <h2>Terms and Conditions</h2>
-                    <div className="terms-text">
+            {isTermsModalOpen && (
+                <div id="termsModal" className="modal" style={{ display: 'block' }}>
+                    <div className="modal-content">
+                        <h2>Terms and Conditions</h2>
+                        <div className="terms-text">
                         <p>
                             Terms and Conditions for Using and Engaging with Ottawa seedlings
                         </p>
@@ -205,13 +207,14 @@ const Signup = () => {
                             terms and conditions at any time. Your continued use of the website constitutes acceptance of any
                             changes.
                         </p>
-                        <button onClick={agreeToTerms}>I Agree</button>
-                        <button onClick={closeTermsModal}>Close</button>
+                            <button onClick={agreeToTerms}>I Agree</button>
+                            <button onClick={closeTermsModal}>Close</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };
 
-export default Signup;
+export default SignUpPage;

@@ -327,6 +327,23 @@ body {
     background-color: #218838;
 }
 
+.link-button {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    color: #28a745;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
+    display: inline !important;
+    width: auto !important;
+}
+
+.link-button:hover {
+    color: #218838;
+}
+
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;

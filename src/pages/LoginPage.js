@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { auth } from '../firebase'; // Firebase configuration file
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './styles.css'; // Assuming you have the styles in this CSS file
 
 const LoginPage = () => {
@@ -75,7 +75,7 @@ const LoginPage = () => {
                         <button type="submit">Login</button>
                     </form>
                     <div className="signup-link">
-                        Don't have an account? <a href="/signup">Sign up</a>
+                        Don't have an account? <Link to="/signup">Sign up</Link>
                     </div>
                 </>
             ) : (
