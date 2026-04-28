@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate, Link } from 'react-router-dom';
 import { auth } from '../firebase';
+import { useCart } from '../context/CartContext';
 import './styles.css';
 
 const LoginPage = () => {
+    const { showToast } = useCart();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -23,6 +25,7 @@ const LoginPage = () => {
         e.preventDefault();
         try {
             await signInWithEmailAndPassword(auth, email, password);
+            showToast("Welcome back!");
             navigate('/');
         } catch (error) {
             setErrorMessage('Invalid email or password. Please try again.');

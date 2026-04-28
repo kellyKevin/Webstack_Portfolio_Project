@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useNavigate, Link } from 'react-router-dom';
 import { auth } from '../firebase';
+import { useCart } from '../context/CartContext';
 import './styles.css';
 
 const SignUpPage = () => {
+    const { showToast } = useCart();
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -22,6 +24,7 @@ const SignUpPage = () => {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             await updateProfile(userCredential.user, { displayName: username });
+            showToast("Account created successfully!");
             navigate('/');
         } catch (error) {
             setErrorMessage(error.message);

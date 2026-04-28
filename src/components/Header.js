@@ -1,15 +1,20 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useScrollDirection } from '../hooks/useScrollDirection';
 import './Header.css';
 
 const Header = () => {
+  const scrollDirection = useScrollDirection();
   const { cart } = useCart();
   const cartItemCount = cart.reduce((total, item) => total + (item.quantity || 1), 0);
 
   return (
-    <header className="header">
-      <nav className="container">
+    <header className={`header ${scrollDirection === 'down' ? 'header-hide' : ''}`}>
+      <nav className="container header-inner">
+        <Link to="/" className="header-logo">
+          Seedlings
+        </Link>
         <ul>
           <li><NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>Home</NavLink></li>
           <li><NavLink to="/products" className={({ isActive }) => isActive ? 'active' : ''}>Products</NavLink></li>
