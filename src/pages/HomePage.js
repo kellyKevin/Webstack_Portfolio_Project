@@ -1,28 +1,53 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './styles.css'; // Import your CSS file
+import './HomePage.css';
 
 const HomePage = () => {
   return (
-    <div>
-      <a className="skip-to-content" href="#content">Skip to Content</a>
-
-      <div className="hero">
-        <h1>Welcome to Ottawa Seedlings</h1>
-        <h2>Garden Centre</h2>
-        <div className="buttons">
-          <a href="https://www.google.com/maps/place/Your+Location+Here" target="_blank" rel="noopener noreferrer">Get Directions</a>
+    <div className="home-page">
+      <section className="hero-section">
+        <div className="hero-content">
+          <h1>Sow the Seeds of a Greener Future</h1>
+          <p>Discover our premium selection of fruit trees, seedlings, and sustainable garden supplies.</p>
+          <div className="hero-cta-group">
+            <Link to="/products" className="btn-primary">Shop Collection</Link>
+            <Link to="/education" className="btn-secondary">Learn More</Link>
+          </div>
         </div>
-        <h3><Link to="/signup">Log-in/Sign-in</Link></h3>
-      </div>
-      
-      <section id="content" className="content">
-        <h2>Our Products</h2>
-        <p>Explore a wide range of plants, gardening tools, and supplies at our garden centre. We offer quality products to help you create and maintain a beautiful garden.</p>
-        <p>Include more details about specific product categories, seasonal offers, or featured items to engage visitors.</p>
       </section>
 
+      <section className="home-features container">
+        <header style={{ textAlign: 'center' }}>
+          <h2>Why Choose Ottawa Seedlings?</h2>
+          <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>Quality you can trust, sustainability you can feel.</p>
+        </header>
 
+        <div className="features-grid">
+          <div className="feature-item">
+            <span className="feature-icon">🌿</span>
+            <h3>Premium Quality</h3>
+            <p>Our seedlings are nurtured with care to ensure high survival rates and bountiful harvests.</p>
+          </div>
+          <div className="feature-item">
+            <span className="feature-icon">🚜</span>
+            <h3>Sustainable Farming</h3>
+            <p>We promote eco-friendly practices that protect the soil and provide healthy produce.</p>
+          </div>
+          <div className="feature-item">
+            <span className="feature-icon">🤝</span>
+            <h3>Expert Support</h3>
+            <p>Get personalized advice from our team of agronomists to help your garden thrive.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="container" style={{ padding: '6rem 0', textAlign: 'center' }}>
+        <div style={{ background: 'var(--secondary-color)', padding: '4rem 2rem', borderRadius: 'var(--radius-lg)', color: 'white' }}>
+          <h2 style={{ color: 'white', marginBottom: '1.5rem' }}>Ready to start your garden?</h2>
+          <p style={{ marginBottom: '2rem', fontSize: '1.1rem', opacity: 0.9 }}>Join our community of growers today and get 10% off your first order.</p>
+          <Link to="/signup" className="btn-primary" style={{ display: 'inline-block' }}>Get Started</Link>
+        </div>
+      </section>
     </div>
   );
 };

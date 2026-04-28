@@ -1,23 +1,20 @@
-// src/pages/Productspage.js
+// src/pages/ProductsPage.js
 
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import { useCart } from '../context/CartContext';
 import './Productspage.css';
 
-const Productspage = () => {
+const ProductsPage = () => {
     const { addToCart, removeFromCart } = useCart();
     const [currentUser, setCurrentUser] = useState(null);
     const [products, setProducts] = useState([]);
-    const [modalImages, setModalImages] = useState([]);
-    const [modalTitle, setModalTitle] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [activeCategory, setActiveCategory] = useState('fruits');
+    const [modalData, setModalData] = useState(null);
     const [quantities, setQuantities] = useState({});
-    
-    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, user => {
@@ -26,27 +23,34 @@ const Productspage = () => {
         return () => unsubscribe();
     }, []);
 
-    const fetchData = async (collectionName) => {
+    const fetchData = async (category) => {
+        setLoading(true);
+        setActiveCategory(category);
         try {
-            const querySnapshot = await getDocs(collection(db, collectionName));
+            const querySnapshot = await getDocs(collection(db, category));
             const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setProducts(data);
 
-            // Initialize quantities for new products
             const initialQuantities = {};
             data.forEach(p => {
                 initialQuantities[p.id] = 1;
             });
             setQuantities(initialQuantities);
         } catch (error) {
-            console.error(`Error fetching data from ${collectionName}:`, error);
+            console.error(`Error fetching data from ${category}:`, error);
+        } finally {
+            setLoading(false);
         }
     };
+
+    useEffect(() => {
+        fetchData('fruits');
+    }, []);
 
     const handleQuantityChange = (productId, value) => {
         setQuantities(prev => ({
             ...prev,
-            [productId]: parseInt(value, 10) || 1
+            [productId]: Math.max(1, parseInt(value, 10) || 1)
         }));
     };
 
@@ -58,76 +62,90 @@ const Productspage = () => {
         const quantity = quantities[product.id] || 1;
         addToCart({
             id: product.id,
-            name: product.id, // Using ID as name since it's displayed as title
+            name: product.id,
             price: parseFloat(product.price) || 0,
             image: product.imagetree1
         }, quantity);
-        alert(`${quantity} added to cart.`);
     };
 
-    const showModal = (images, title) => {
-        setModalImages(images);
-        setModalTitle(title);
-        setIsModalOpen(true);
+    const openModal = (product) => {
+        setModalData({
+            title: product.id,
+            images: [product.imagetree1, product.imagetree2, product.imagetree3].filter(Boolean)
+        });
     };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
-
-    useEffect(() => {
-        fetchData('fruits');
-    }, []);
 
     return (
-        <div>
-            <div className="selector">
-                <h1><button onClick={() => navigate('/cart')}>View Cart</button></h1>
-                <h2>
-                    <label htmlFor="collection-select">Choose a collection:</label>
-                    <select id="collection-select" onChange={(e) => fetchData(e.target.value)}>
-                        <option value="fruits">Fruits</option>
-                        <option value="trees">Trees</option>
-                        <option value="veges">Vegetables</option>
-                    </select>
-                    <button onClick={() => fetchData(document.getElementById('collection-select').value)}>Fetch Data</button>
-                </h2>
-            </div>
+        <div className="products-page container">
+            <header className="products-header">
+                <h1>Our Collection</h1>
+                <p>Sustainable seedlings for a greener future</p>
+            </header>
 
-            <div className="container" id="data-container">
-                {products.map(product => (
-                    <div key={product.id} className="card">
-                        <img
-                            src={product.imagetree1 || 'placeholder.jpg'}
-                            alt={product.Description || 'No description available'}
-                            onClick={() => showModal([product.imagetree1, product.imagetree2, product.imagetree3], product.id)}
-                        />
-                        <div className="card-title">{product.id}</div>
-                        <div className="card-desc">{product.Description || 'No description available'}</div>
-                        <div className="card-price">
-                            ksh{(parseFloat(product.price) || 0).toFixed(2)}
-                        </div>
-                        <div className="quantity-selector">
-                            <input
-                                type="number"
-                                min="1"
-                                value={quantities[product.id] || 1}
-                                onChange={(e) => handleQuantityChange(product.id, e.target.value)}
-                            />
-                        </div>
-                        <button onClick={() => handleAddToCart(product)}>Add to Cart</button>
-                        <button onClick={() => removeFromCart(product.id)} className="remove-btn">Remove Entirely</button>
-                    </div>
+            <nav className="category-nav">
+                {['fruits', 'trees', 'veges'].map(cat => (
+                    <button
+                        key={cat}
+                        className={`category-btn ${activeCategory === cat ? 'active' : ''}`}
+                        onClick={() => fetchData(cat)}
+                    >
+                        {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                    </button>
                 ))}
-            </div>
+            </nav>
 
-            {isModalOpen && (
-                <div id="imageModal" className="modal" style={{ display: 'block' }}>
-                    <div className="modal-content">
-                        <span className="close" onClick={closeModal}>&times;</span>
-                        <div id="modal-images">
-                            {modalImages.map((img, index) => (
-                                <img key={index} src={img || 'placeholder.jpg'} alt={`${modalTitle} view ${index + 1}`} />
+            {loading ? (
+                <div style={{ textAlign: 'center', padding: '3rem' }}>Loading products...</div>
+            ) : (
+                <div className="products-grid">
+                    {products.map(product => (
+                        <article key={product.id} className="product-card">
+                            <div className="product-image-wrapper" onClick={() => openModal(product)}>
+                                <img
+                                    src={product.imagetree1 || 'placeholder.jpg'}
+                                    alt={product.Description || product.id}
+                                />
+                            </div>
+                            <div className="product-info">
+                                <h3 className="product-title">{product.id}</h3>
+                                <p className="product-desc">{product.Description || 'No description available'}</p>
+                                <div className="product-footer">
+                                    <span className="product-price">
+                                        ksh {(parseFloat(product.price) || 0).toLocaleString()}
+                                    </span>
+                                </div>
+                                <div className="product-actions">
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        className="quantity-input"
+                                        value={quantities[product.id] || 1}
+                                        onChange={(e) => handleQuantityChange(product.id, e.target.value)}
+                                    />
+                                    <button className="add-to-cart-btn" onClick={() => handleAddToCart(product)}>
+                                        Add to Cart
+                                    </button>
+                                </div>
+                                <button
+                                    className="remove-entirely-btn"
+                                    onClick={() => removeFromCart(product.id)}
+                                >
+                                    Remove from Cart
+                                </button>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+            )}
+
+            {modalData && (
+                <div className="modal-overlay" onClick={() => setModalData(null)}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                        <span className="modal-close" onClick={() => setModalData(null)}>&times;</span>
+                        <h2>{modalData.title}</h2>
+                        <div className="modal-images-grid">
+                            {modalData.images.map((img, index) => (
+                                <img key={index} src={img} alt={`${modalData.title} view ${index + 1}`} />
                             ))}
                         </div>
                     </div>
@@ -137,4 +155,4 @@ const Productspage = () => {
     );
 };
 
-export default Productspage;
+export default ProductsPage;
